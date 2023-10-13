@@ -1,0 +1,50 @@
+.form-container {
+  margin-bottom: 20px;
+}
+
+.form-container label {
+  margin-bottom: 10px;
+}
+
+.form-container select,
+.form-container input[type="text"] {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form-container button {
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Table Styles */
+.table-container {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px !important;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.table-container th {
+  padding: 10px;
+  text-align: left;
+  background-color: #007BFF;
+  color: #fff;
+}
+
+.table-container td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+/* No Data Styles */
+.no-data {
+  text-align: center;
+}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>{% block title %}Лабораторные работы{% endblock %}</title>
+    <!-- Include common CSS and JavaScript files here -->
+    {% load static %}
+    <link href="{% static 'styles.css' %}" rel="stylesheet">
+    {% block head_content %}{% endblock %}
+</head>
+<body>
+    {% include 'header.html' %}
+    <h1>{% block heading %}{% endblock %}</h1>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <!-- Include footer content here -->
+{#        Created by student of DSTU Daniil Borovoy#}
+    </footer>
+</body>
+</html>

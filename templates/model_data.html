@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% load tags  %}
+
+{% block head_content %}
+<link href="{% static 'model-data.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+    {% include "go_back_btn.html" %}
+    <form method="GET" action="" class="form-container">
+
+        {% if not hide_filter %}
+
+            {% if not hide_filter_value %}
+                <div  style="padding-top: 16px !important;">
+                    <label for="filter_field">Filter by Field:</label>
+                    <select name="filter_field" id="filter_field">
+                        {% for field_name in fields %}
+                            <option value="{{ field_name.name }}">{{ field_name.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {%  endif %}
+            <div style="padding-top: 16px !important;">
+                <label for="filter_value">Filter Value:</label>
+                    {% if input_type == 'date' %}
+                        <input type="date" name="filter_value" id="filter_field" value="{{ input_value }}"/>
+                    {% else %}
+                        <input type="text" name="filter_value" id="filter_value" value="{{ input_value }}"/>
+                    {% endif %}
+            </div>
+            <div>
+                <button type="submit">Apply Filter</button>
+            </div>
+
+        {% endif %}
+    </form>
+
+
+    {% block title %}<h1># {{ model_name }} Table</h1>{% endblock %}
+
+    <div class="table-container">
+        <table class="table-container">
+            <thead>
+            <tr>
+                {% for field_name in fields %}
+                    <th>{{ field_name.name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+            <tbody>
+            {% for item in data %}
+                <tr>
+                    {% for field_name in fields %}
+                        <td>{{ item|get_attribute:field_name.name }}</td>
+                    {% endfor %}
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="{{ fields|length }}" class="no-data">No {{ model_name|lower }} available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

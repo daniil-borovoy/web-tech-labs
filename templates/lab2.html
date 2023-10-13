@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'lab2.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1># Лабораторная №2</h1>
+
+        <div class="links__container">
+
+        <h2>Tables List</h2>
+        <ul>
+            {% for table in tables %}
+                <li>
+                    - <a style="color: #333333;" href="{{ table.link }}">{{ table.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <h2>Custom queries List</h2>
+        <ul>
+            {% for query in queries %}
+                <li>
+                    - <a style="color: #333333;" href="{{ query.link }}">{{ query.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        </div>
+    </div>
+{% endblock %}
+

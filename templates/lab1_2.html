@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_content %}
+    <link href="{% static 'lab1.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <h2>Введите информацию о поставщике</h2>
+    <form action="" method="POST"> {% csrf_token %}
+        <label for="supplier_name">Наименование поставщика:</label>
+        <input type="text" id="supplier_name" name="name" required><br><br>
+
+        <label for="supplier_address">Адрес:</label>
+        <textarea id="supplier_address" name="address" rows="4" required></textarea><br><br>
+
+        <label for="supplier_phone">Телефон:</label>
+        <input type="tel" id="supplier_phone" name="phone" required><br><br>
+
+        <label for="contact_person">К кому обращаться:</label>
+        <input type="text" id="contact_person" name="who_to_contact" required><br><br>
+
+        <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%; align-items: center;">
+            <input type="submit" value="Отправить">
+
+            <a style="text-decoration: none; color: #007BFF;" href="/labs/1">Назад</a>
+        </div>
+    </form>
+
+    {% if supplier %}
+        <div class="card">
+            <h2>Информация о поставщике</h2>
+            <p><strong>Наименование поставщика:</strong> {{supplier.name}}</p>
+            <p><strong>Адрес:</strong> {{supplier.address}}</p>
+            <p><strong>Телефон:</strong> {{supplier.phone}}</p>
+            <p><strong>К кому обращаться:</strong> {{supplier.who_to_contact}}</p>
+        </div>
+    {% endif %}
+{% endblock %}
