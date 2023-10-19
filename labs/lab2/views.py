@@ -1,11 +1,17 @@
-from django.db.models import Count, Sum, F
-from django.shortcuts import render
-from django.db import models
-from ..models import Supplier, Sale, Supply, Product
 from datetime import date
+from typing import Optional
 
 from dateutil import relativedelta
 from dateutil.parser import parse as parse_date
+from django.db import models
+from django.db.models import Count, Sum, F
+from django.forms import model_to_dict
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
+
+from labs.forms import table_name_to_form_map
+from labs.models import Supplier, Sale, Supply, Product, Log
 
 table_name_to_table_map = {
     Supplier.__name__: Supplier,
@@ -32,6 +38,71 @@ def table_page(request, table_name):
             "hide_filter": True,
         },
     )
+
+
+def entity_page(request, table_name, entity_id: Optional[int] = None):
+    if not entity_id and request.method == "POST":
+        form = table_name_to_form_map[table_name](request.POST)
+
+        # match form:
+        #     case isinstance(form, Supply):
+        #         product = Product.objects.filter(id=form.product_id)
+        #         product.count += form.count
+        #         product.save()
+        #     case isinstance(form, Sale):
+        #         pass
+        #     case _:
+        #         pass
+
+        if form.is_valid():
+            form.save()
+            # Redirect to a success page or another page
+            return HttpResponseRedirect(reverse("table", args=[table_name]))
+
+        return render(
+            request,
+            "entities/entity_form.html",
+            {"form": form, "home_link": "/labs/3/"},
+        )
+    elif not entity_id:
+        form = table_name_to_form_map[table_name]
+        return render(
+            request,
+            "entities/entity_form.html",
+            {"form": form, "home_link": "/labs/3/"},
+        )
+
+    try:
+        entity = table_name_to_table_map[table_name].objects.get(pk=entity_id)
+    except Exception:
+        # Handle the case when the entity doesn't exist
+        return HttpResponseRedirect(reverse("entity_not_found_view"))
+
+    if request.method == "POST":
+        form = table_name_to_form_map[table_name](request.POST, instance=entity)
+        if form.is_valid():
+            form.save()
+            # Redirect to a success page or another page
+            return HttpResponseRedirect(reverse("table", args=[table_name]))
+    else:
+        form = table_name_to_form_map[table_name](instance=entity)
+
+    return render(request, "entities/entity_form.html", {"form": form})
+
+
+def delete_entity(request, table_name: str, entity_id: int):
+    entity = get_object_or_404(table_name_to_table_map[table_name], pk=entity_id)
+
+    if request.method == "POST":
+        # entity.deleted = True
+        entity.delete()
+
+        # log = Log(data=model_to_dict(entity))
+        # log.save()
+
+        return HttpResponseRedirect(reverse("table", args=[table_name]))
+
+    raise HttpResponseBadRequest
 
 
 # Queries

@@ -1,5 +1,6 @@
 .env
 db_data
+db_dump
 *.pyc
 *~
 *.swp

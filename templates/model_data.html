@@ -1,70 +1,94 @@
 {% extends "base.html" %}
 {% load static %}
+{% load tags %}
 
-{% load tags  %}
+
+{% block document_title %}{{ model_name }} Table{% endblock %}
 
 {% block head_content %}
-<link href="{% static 'model-data.css' %}" rel="stylesheet">
+    <link href="{% static 'model-data.css' %}" rel="stylesheet">
 {% endblock %}
+
 
 {% block content %}
     <div class="container">
-    {% include "go_back_btn.html" %}
-    <form method="GET" action="" class="form-container">
-
-        {% if not hide_filter %}
-
-            {% if not hide_filter_value %}
-                <div  style="padding-top: 16px !important;">
-                    <label for="filter_field">Filter by Field:</label>
-                    <select name="filter_field" id="filter_field">
-                        {% for field_name in fields %}
-                            <option value="{{ field_name.name }}">{{ field_name.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            {%  endif %}
-            <div style="padding-top: 16px !important;">
-                <label for="filter_value">Filter Value:</label>
+        {% include "go_back_btn.html" %}
+        <form method="GET" action="" class="form-container">
+            {% if not hide_filter %}
+                {% if not hide_filter_value %}
+                    <div style="padding-top: 16px !important;">
+                        <label for="filter_field">Filter by Field:</label>
+                        <select name="filter_field" id="filter_field">
+                            {% for field_name in fields %}
+                                <option value="{{ field_name.name }}">{{ field_name.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
+                <div style="padding-top: 16px !important;">
+                    <label for="filter_value">Filter Value:</label>
                     {% if input_type == 'date' %}
                         <input type="date" name="filter_value" id="filter_field" value="{{ input_value }}"/>
                     {% else %}
                         <input type="text" name="filter_value" id="filter_value" value="{{ input_value }}"/>
                     {% endif %}
-            </div>
-            <div>
-                <button type="submit">Apply Filter</button>
-            </div>
+                </div>
+                <div>
+                    <button type="submit">Apply Filter</button>
+                </div>
+            {% endif %}
+        </form>
 
-        {% endif %}
-    </form>
+        {% block title %}<h1 style="margin-top: 50px">{{ model_name }} Table</h1>{% endblock %}
 
-
-    {% block title %}<h1># {{ model_name }} Table</h1>{% endblock %}
-
-    <div class="table-container">
-        <table class="table-container">
-            <thead>
-            <tr>
-                {% for field_name in fields %}
-                    <th>{{ field_name.name }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-            <tbody>
-            {% for item in data %}
+        <div class="table-container">
+            <table class="table-container">
+                <thead>
                 <tr>
                     {% for field_name in fields %}
-                        <td>{{ item|get_attribute:field_name.name }}</td>
+                        <th>{{ field_name.name }}</th>
                     {% endfor %}
+                    <th>
+                        <div style="display: flex; justify-content: flex-end">actions</div>
+                    </th>
                 </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="{{ fields|length }}" class="no-data">No {{ model_name|lower }} available.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for item in data %}
+                    <tr>
+                        {% for field_name in fields %}
+                            <td>{{ item|get_attribute:field_name.name }}</td>
+                        {% endfor %}
+                        <td>
+                            <div style="display: flex; flex-direction: row; justify-content: flex-end">
+                                <a href="{% url 'edit_entity' model_name item.id %}" style="color: #007BFF">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </a>
+                                <form method="POST" action="delete/{{ item.id }}">{% csrf_token %}
+                                    <button
+                                            type="submit"
+                                            style="color: red; border-style: none; background: none; cursor: pointer;"
+                                    >
+                                        <span class="material-symbols-outlined">delete</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="{{ fields|length }}" class="no-data">No {{ model_name|lower }} available.</td>
+                    </tr>
+                {% endfor %}
+                <tr></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex-container" style="display: flex; width: 100%; justify-content: flex-end; margin-top: 30px;">
+            <a href="{% url 'add_entity' model_name %}" style="color: #007BFF">
+                <span class="material-symbols-outlined">add_circle</span>
+            </a>
+        </div>
     </div>
-</div>
 {% endblock %}

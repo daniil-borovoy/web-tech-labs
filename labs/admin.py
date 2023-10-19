@@ -1,8 +1,9 @@
 from django.contrib import admin
-from labs.models import Product, Sale, Supply, Supplier
+from labs.models import Product, Sale, Supply, Supplier, Log
 
 
 # Register your models here.
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -21,4 +22,9 @@ class SupplyAdmin(admin.ModelAdmin):
 
 @admin.register(Supplier)
 class SupplierAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Log)
+class LogAdmin(admin.ModelAdmin):
     pass
