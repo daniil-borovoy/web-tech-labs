@@ -1,5 +1,4 @@
 from django import forms
-from django.forms import IntegerField, CharField
 
 from .models import Supplier, Sale, Supply, Product
 
