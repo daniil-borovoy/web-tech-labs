@@ -5,17 +5,17 @@
     {% load static %}
     <link href="{% static 'styles.css' %}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-    {#    <script src="https://cdn.tailwindcss.com"></script>#}
+    <script src="https://cdn.tailwindcss.com"></script>
     {% block head_content %}{% endblock %}
 </head>
-<body>
-{% include 'header.html' %}
-<h1>{% block heading %}{% endblock %}</h1>
-<main>
-    {% block content %}{% endblock %}
-</main>
-<footer>
-    {#    Footer#}
-</footer>
+<body class="h-screen bg-gray-100">
+<div class="flex flex-col h-screen">
+    {% include 'header.html' %}
+    <h1 class="text-3xl font-bold m-4">{% block heading %}{% endblock %}</h1>
+    <main class="flex-1 p-4">
+        {% block content %}{% endblock %}
+    </main>
+    {% include "footer.html" %}
+</div>
 </body>
 </html>

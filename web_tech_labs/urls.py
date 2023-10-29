@@ -20,10 +20,11 @@ from django.urls import path, include
 from labs import views
 
 urlpatterns = [
-    path('', views.index, name='home'),
-    path('labs/<str:lab_number>/', views.render_lab, name='lab'),
-    path('labs/2/', include('labs.lab2.urls')),
-    path('labs/3/', include('labs.lab3.urls')),
-    path('info/', views.info),
-    path('admin/', admin.site.urls),
+    path("", views.index, name="home"),
+    path("labs/<str:lab_number>/", views.render_lab, name="lab"),
+    path("labs/2/", include("labs.lab2.urls")),
+    path("labs/3/", include("labs.lab3.urls")),
+    path("info/", views.info),
+    path("admin/", admin.site.urls),
+    path("", include("labs.lab4.urls")),
 ]

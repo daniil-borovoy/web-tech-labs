@@ -11,8 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
-from django.conf import settings
 from pathlib import Path
+
+from django.conf import settings
 from dotenv import load_dotenv
 
 load_dotenv()  # loads the configs from .env
@@ -127,3 +128,9 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATICFILES_DIRS = ("static",)
+
+LOGIN_URL = "/sign-in"
+
+LOGOUT_REDIRECT_URL = "/"
+
+# AUTHENTICATION_BACKENDS = ['labs.lab4.auth.EmailBackend']

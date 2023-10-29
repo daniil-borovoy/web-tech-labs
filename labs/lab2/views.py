@@ -3,15 +3,15 @@ from typing import Optional
 
 from dateutil import relativedelta
 from dateutil.parser import parse as parse_date
+from django.contrib.auth.decorators import login_required
 from django.db import models
 from django.db.models import Count, Sum, F
-from django.forms import model_to_dict
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
 from labs.forms import table_name_to_form_map
-from labs.models import Supplier, Sale, Supply, Product, Log
+from labs.models import Supplier, Sale, Supply, Product
 
 table_name_to_table_map = {
     Supplier.__name__: Supplier,
@@ -20,7 +20,7 @@ table_name_to_table_map = {
     Product.__name__: Product,
 }
 
-
+@login_required
 def table_page(request, table_name):
     table: models.Model = table_name_to_table_map.get(table_name)
     if table is None:
@@ -39,7 +39,7 @@ def table_page(request, table_name):
         },
     )
 
-
+@login_required
 def entity_page(request, table_name, entity_id: Optional[int] = None):
     if not entity_id and request.method == "POST":
         form = table_name_to_form_map[table_name](request.POST)
@@ -89,6 +89,7 @@ def entity_page(request, table_name, entity_id: Optional[int] = None):
 
     return render(request, "entities/entity_form.html", {"form": form})
 
+@login_required
 
 def delete_entity(request, table_name: str, entity_id: int):
     entity = get_object_or_404(table_name_to_table_map[table_name], pk=entity_id)
@@ -104,6 +105,7 @@ def delete_entity(request, table_name: str, entity_id: int):
 
     raise HttpResponseBadRequest
 
+@login_required
 
 # Queries
 def suppliers_in_city(request):
@@ -128,6 +130,7 @@ def suppliers_in_city(request):
         },
     )
 
+@login_required
 
 def products_sold_in_day(request):
     # Get today's date
@@ -157,6 +160,7 @@ def products_sold_in_day(request):
         },
     )
 
+@login_required
 
 def revenue_in_month(request):
     february_month_number = 2
@@ -193,6 +197,7 @@ def revenue_in_month(request):
     )
 
 
+@login_required
 def most_popular_product(request):
     most_popular = (
         Product.objects.annotate(sales_count=Count("sale"))
@@ -207,6 +212,7 @@ def most_popular_product(request):
     )
 
 
+@login_required
 def supplier_shop_products(request):
     selected_supplier = (
         request.GET.get("filter_field")

@@ -1,5 +1,6 @@
 from typing import Optional
 
+from django.contrib.auth.decorators import login_required
 from django.db import models
 from django.http import (
     HttpResponseRedirect,
@@ -9,7 +10,7 @@ from django.http import (
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
-from labs.forms import table_name_to_form_map, SupplyForm
+from labs.forms import table_name_to_form_map
 from labs.models import Supplier, Sale, Supply, Product
 
 table_name_to_table_map = {
@@ -20,6 +21,7 @@ table_name_to_table_map = {
 }
 
 
+@login_required
 def table_page(request, table_name):
     table: models.Model = table_name_to_table_map.get(table_name)
     if table is None:
@@ -41,6 +43,7 @@ def table_page(request, table_name):
 
 
 # TODO: refactor
+@login_required
 def entity_page(request, table_name, entity_id: Optional[int] = None):
     form = table_name_to_form_map[table_name](request.POST)
 
@@ -74,6 +77,7 @@ def entity_page(request, table_name, entity_id: Optional[int] = None):
     return render(request, "entities/entity_form.html", {"form": form})
 
 
+@login_required
 def delete_entity(request, table_name: str, entity_id: int):
     entity = get_object_or_404(table_name_to_table_map[table_name], pk=entity_id)
 

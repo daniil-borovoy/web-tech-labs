@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Авторизация</title>
+    {% load static %}
+    <link href="{% static 'styles.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% block head_content %}{% endblock %}
+</head>
+<body class="bg-gray-200 min-h-screen flex items-center justify-center">
+{% block content %}{% endblock %}
+</body>
+</html>

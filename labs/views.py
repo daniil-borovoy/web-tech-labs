@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from .handlers import (
@@ -9,14 +10,17 @@ from .handlers import (
 )
 
 
+@login_required
 def index(request):
     return render(request, "home.html")
 
 
+@login_required
 def info(request):
     return render(request, "info.html")
 
 
+@login_required
 def render_lab(request, lab_number):
     match lab_number:
         case "1":
