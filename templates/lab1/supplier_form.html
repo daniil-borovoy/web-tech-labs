@@ -1,0 +1,47 @@
+{% extends "common/base.html" %}
+
+{% block content %}
+    <div class="container mx-auto bg-white rounded-lg shadow-md p-8 w-1/2">
+        <h2 class="text-2xl font-bold mb-4">Введите информацию о поставщике</h2>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="supplier_name" class="block font-semibold">Наименование поставщика:</label>
+                <input type="text" id="supplier_name" name="name" required class="w-full border p-2 rounded-lg">
+            </div>
+
+            <div class="mb-4">
+                <label for="supplier_address" class="block font-semibold">Адрес:</label>
+                <textarea id="supplier_address" name="address" rows="4" required
+                          class="w-full border p-2 rounded-lg"></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label for="supplier_phone" class="block font-semibold">Телефон:</label>
+                <input type="tel" id="supplier_phone" name="phone" required class="w-full border p-2 rounded-lg">
+            </div>
+
+            <div class="mb-4">
+                <label for="contact_person" class="block font-semibold">К кому обращаться:</label>
+                <input type="text" id="contact_person" name="who_to_contact" required
+                       class="w-full border p-2 rounded-lg">
+            </div>
+
+            <div class="flex justify-between items-center">
+                <input type="submit" value="Отправить" class="bg-blue-500 text-white p-2 rounded-lg">
+                <a href="/labs/1" class="text-blue-500">Назад</a>
+            </div>
+        </form>
+
+        {% if supplier %}
+            <hr class="mt-10"/>
+            <div class="card mt-8">
+                <h2 class="text-2xl font-bold">Информация о поставщике</h2>
+                <p><strong>Наименование поставщика:</strong> {{ supplier.name }}</p>
+                <p><strong>Адрес:</strong> {{ supplier.address }}</p>
+                <p><strong>Телефон:</strong> {{ supplier.phone }}</p>
+                <p><strong>К кому обращаться:</strong> {{ supplier.who_to_contact }}</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

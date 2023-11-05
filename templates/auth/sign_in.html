@@ -1,16 +1,26 @@
 {% extends "auth/auth_base.html" %}
 
 {% block content %}
-    <div class="bg-white rounded-lg shadow-md p-8 w-80">
-        <h1 class="text-2xl font-semibold mb-6 text-center">Authentication | Sign In</h1>
-        <form method="post">{% csrf_token %}
-            {{ form }}
-            <button type="submit" class="w-full bg-blue-500 text-white font-semibold rounded-md py-2">Sign In</button>
-        </form>
+    <div class="container mx-auto">
+        <div class="bg-white rounded-lg shadow-md p-8 w-80 mx-auto">
+            {% if user.is_authenticated %}
+                <h1 class="text-2xl font-semibold mb-6 text-center">Добро пожаловать, {{ user.username }}</h1>
+                <p class="text-center">Вы авторизованы и можете использовать наш сервис.</p>
+            {% else %}
+                <h1 class="text-2xl font-semibold mb-6 text-center">Вход</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit" class="w-full bg-blue-500 text-white font-semibold rounded-md py-2">Войти
+                    </button>
+                </form>
 
-        <hr class="my-6 border-t">
+                <hr class="my-6 border-t">
 
-        <p class="text-gray-600 text-center">Don't have an account? <a href="/sign-up" class="text-blue-500">Sign Up</a>
-        </p>
+                <p class="text-gray-600 text-center">
+                    У вас нет учетной записи? <a href="/auth/sign-up" class="text-blue-500">Создать аккаунт</a>
+                </p>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

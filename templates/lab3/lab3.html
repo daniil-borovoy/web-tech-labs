@@ -1,16 +1,11 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block head_content %}
-    <link rel="stylesheet" type="text/css" href="{% static 'lab2.css' %}">
-{% endblock %}
+{% extends "common/base.html" %}
 
 {% block content %}
-    <div class="container">
-        <h1># Лабораторная №3</h1>
+    <div class="container mx-auto bg-white rounded-lg shadow-md p-8 w-1/2">
+        <h1 class="text-xl font-bold mb-10"># Лабораторная №3</h1>
 
         <div class="links__container">
-            <h2>Tables List</h2>
+            <h2>Таблицы</h2>
             <ul>
                 {% for table in tables %}
                     <li>

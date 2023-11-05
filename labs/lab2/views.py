@@ -4,6 +4,7 @@ from typing import Optional
 from dateutil import relativedelta
 from dateutil.parser import parse as parse_date
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db import models
 from django.db.models import Count, Sum, F
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
@@ -11,48 +12,44 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
 from labs.forms import table_name_to_form_map
-from labs.models import Supplier, Sale, Supply, Product
+from labs.models import Supplier, Sale, Product
+from labs.utils.pagination import pagination_param_is_valid, DEFAULT_PAGE_LIMIT
+from labs.utils.tables import table_name_to_table_map
 
-table_name_to_table_map = {
-    Supplier.__name__: Supplier,
-    Sale.__name__: Sale,
-    Supply.__name__: Supply,
-    Product.__name__: Product,
-}
 
 @login_required
 def table_page(request, table_name):
     table: models.Model = table_name_to_table_map.get(table_name)
     if table is None:
-        return render(request, "model_data.html")
+        return render(request, "common/model_data.html", {"is_read_only": True})
 
     entries = table.objects.filter(deleted=False)
+    limit = request.GET.get("limit")
+    page_number = request.GET.get("page")
+    page_limit = int(limit) if pagination_param_is_valid(limit) else DEFAULT_PAGE_LIMIT
+
+    paginator = Paginator(entries, page_limit)
+    page_obj = paginator.get_page(page_number)
+
     fields = [f for f in table._meta.fields if f.name != "id" and f.name != "deleted"]
+
     return render(
         request,
-        "model_data.html",
+        "common/model_data.html",
         {
             "model_name": table_name,
             "fields": fields,
-            "data": entries,
+            "data": page_obj,
             "hide_filter": True,
+            "is_read_only": True,
         },
     )
+
 
 @login_required
 def entity_page(request, table_name, entity_id: Optional[int] = None):
     if not entity_id and request.method == "POST":
         form = table_name_to_form_map[table_name](request.POST)
-
-        # match form:
-        #     case isinstance(form, Supply):
-        #         product = Product.objects.filter(id=form.product_id)
-        #         product.count += form.count
-        #         product.save()
-        #     case isinstance(form, Sale):
-        #         pass
-        #     case _:
-        #         pass
 
         if form.is_valid():
             form.save()
@@ -89,25 +86,20 @@ def entity_page(request, table_name, entity_id: Optional[int] = None):
 
     return render(request, "entities/entity_form.html", {"form": form})
 
-@login_required
 
+@login_required
 def delete_entity(request, table_name: str, entity_id: int):
     entity = get_object_or_404(table_name_to_table_map[table_name], pk=entity_id)
 
     if request.method == "POST":
-        # entity.deleted = True
         entity.delete()
-
-        # log = Log(data=model_to_dict(entity))
-        # log.save()
 
         return HttpResponseRedirect(reverse("table", args=[table_name]))
 
     raise HttpResponseBadRequest
 
-@login_required
 
-# Queries
+@login_required
 def suppliers_in_city(request):
     value = (
         request.GET.get("filter_value")
@@ -121,17 +113,18 @@ def suppliers_in_city(request):
 
     return render(
         request,
-        "model_data.html",
+        "common/model_data.html",
         {
             "model_name": f"Перечень поставщиков, расположенных по адресу в г. {value}",
             "fields": fields,
             "data": moscow_suppliers,
             "hide_filter_value": True,
+            "is_read_only": True,
         },
     )
 
-@login_required
 
+@login_required
 def products_sold_in_day(request):
     # Get today's date
     today = date.today()
@@ -149,7 +142,7 @@ def products_sold_in_day(request):
 
     return render(
         request,
-        "model_data.html",
+        "common/model_data.html",
         {
             "model_name": "Cписок товаров, проданных за сегодняшний день",
             "fields": fields,
@@ -157,11 +150,12 @@ def products_sold_in_day(request):
             "input_type": "date",
             "input_value": value.strftime("%Y-%m-%d"),
             "hide_filter_value": True,
+            "is_read_only": True,
         },
     )
 
-@login_required
 
+@login_required
 def revenue_in_month(request):
     february_month_number = 2
     current_year = date.today().year
@@ -187,7 +181,7 @@ def revenue_in_month(request):
 
     return render(
         request,
-        "query_3.html",
+        "lab2/queries/query_3.html",
         {
             "title": "Выручка проданного товара за февраль текущего года",
             "value": total_revenue,
@@ -207,7 +201,7 @@ def most_popular_product(request):
 
     return render(
         request,
-        "one_value_display.html",
+        "lab2/queries/one_value_display.html",
         {"title": "Самый популярный товар", "value": most_popular},
     )
 
@@ -234,7 +228,7 @@ def supplier_shop_products(request):
 
     return render(
         request,
-        "query_5.html",
+        "lab2/queries/query_5.html",
         {
             "title": f"Список товаров, поставляемый {selected_supplier}, отсортированный от самого дорогого до самого дешевого",
             "fields": fields,

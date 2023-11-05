@@ -1,35 +1,75 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
-from .handlers import (
-    handle_lab_1,
-    handle_lab_1_2,
-    handle_lab_2,
-    default_handler,
-    handle_lab_3,
-)
+from labs.models import Product, Supplier, Sale, Supply
+
+tables = [
+    {"name": "Поставщики", "link": f"tables/{Supplier.__name__}"},
+    {"name": "Продажи", "link": f"tables/{Sale.__name__}"},
+    {"name": "Поставки", "link": f"tables/{Supply.__name__}"},
+    {"name": "Товары", "link": f"tables/{Product.__name__}"},
+]
+
+queries = [
+    {
+        "name": "Перечень поставщиков, расположенных по адресу в г. Москва",
+        "link": "queries/suppliers-in-city",
+    },
+    {
+        "name": "Cписок товаров, проданных за сегодняшний день",
+        "link": "queries/products-sold-today",
+    },
+    {
+        "name": "Выручка проданного товара за февраль текущего года",
+        "link": "queries/revenue-in-month",
+    },
+    {
+        "name": "Самый популярный товар (т.е. тот товар, который продавался чаще всего)",
+        "link": "queries/most-popular-product",
+    },
+    {
+        "name": "Вывести список товаров, поставляемый Mi SHOP, отсортированный от самого дорогого до самого дешевого",
+        "link": "queries/supplier-shop-products",
+    },
+]
 
 
-@login_required
-def index(request):
-    return render(request, "home.html")
+class Lab1View(TemplateView):
+    template_name = "lab1/lab1.html"
 
 
-@login_required
-def info(request):
-    return render(request, "info.html")
+class Lab2View(TemplateView):
+    template_name = "lab2/lab2.html"
+
+    def get(self, request, *args, **kwargs):
+        return self.render_to_response(context={"tables": tables, "queries": queries})
 
 
-@login_required
-def render_lab(request, lab_number):
-    match lab_number:
+class Lab3View(TemplateView):
+    template_name = "lab3/lab3.html"
+
+    def get(self, request, *args, **kwargs):
+        return self.render_to_response(context={"tables": tables})
+
+
+class LabNotFoundView(TemplateView):
+    template_name = "common/lab_not_found.html"
+
+
+class HomeView(TemplateView):
+    template_name = "home.html"
+
+
+class InfoView(TemplateView):
+    template_name = "info.html"
+
+
+def get_lab_view_by_name(request, lab_name):
+    match lab_name:
         case "1":
-            return handle_lab_1(request, lab_number)
-        case "1_2":
-            return handle_lab_1_2(request, lab_number)
+            return Lab1View.as_view()(request)
         case "2":
-            return handle_lab_2(request, lab_number)
+            return Lab2View.as_view()(request)
         case "3":
-            return handle_lab_3(request, lab_number)
+            return Lab3View.as_view()(request)
         case _:
-            return default_handler(request, lab_number)
+            return LabNotFoundView.as_view()(request)

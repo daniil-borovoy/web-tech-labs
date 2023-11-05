@@ -1,0 +1,118 @@
+{% extends "common/base.html" %}
+
+{% load tags %}
+
+{% block document_title %}{{ model_name }}{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto bg-white rounded-lg shadow-md p-8">
+        {% include "common/go_back_btn.html" %}
+
+        <form method="GET" action="" class="form-container border border-gray-300 p-4 rounded-lg">
+            {% csrf_token %}
+            {% if not hide_filter %}
+                {% if not hide_filter_value %}
+                    <div class="py-4">
+                        <label for="filter_field" class="font-semibold">Filter by Field:</label>
+                        <select name="filter_field" id="filter_field" class="w-full border p-2">
+                            {% for field_name in fields %}
+                                <option value="{{ field_name.name }}">{{ field_name.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
+                <div class="py-4">
+                    <label for="filter_value" class="font-semibold">Filter Value:</label>
+                    {% if input_type == 'date' %}
+                        <input type="date" name="filter_value" id="filter_field" value="{{ input_value }}"
+                               class="w-full border p-2">
+                    {% else %}
+                        <input type="text" name="filter_value" id="filter_value" value="{{ input_value }}"
+                               class="w-full border p-2">
+                    {% endif %}
+                </div>
+                <div>
+                    <button type="submit" class="bg-blue-500 text-white font-semibold rounded-md py-2">Apply Filter
+                    </button>
+                </div>
+            {% endif %}
+        </form>
+
+        {% block title %}
+            <h1 class="text-2xl font-semibold mt-12">{{ model_name }} Table</h1>
+        {% endblock %}
+
+        <div class="table-container border border-gray-300 rounded-lg mt-4">
+            <table class="table-fixed w-full">
+                <thead>
+                <tr>
+                    {% for field_name in fields %}
+                        <th class="px-4 py-2">{{ field_name.name }}</th>
+                    {% endfor %}
+                    {% if not is_read_only %}
+                        <th class="px-4 py-2 text-right mr-5" style="text-align: right !important;">Действия</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in data %}
+                    <tr>
+                        {% for field_name in fields %}
+                            <td class="px-4 py-2">{{ item|get_attribute:field_name.name }}</td>
+                        {% endfor %}
+
+                        {% if not is_read_only %}
+                            <td class="px-4 py-2">
+                                <div class="flex justify-end">
+                                    <a href="{% url 'edit_entity' model_name item.id %}" class="text-blue-500 mr-5">
+                                        <span class="material-symbols-outlined">edit</span>
+                                    </a>
+                                    <form method="POST" action="delete/{{ item.id }}" class="inline">
+                                        {% csrf_token %}
+                                        <button
+                                                type="submit"
+                                                class="text-red-500 border-0 bg-transparent cursor-pointer"
+                                        >
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="{{ fields|length }}" class="no-data p-4">No {{ model_name|lower }} availale.</td>
+                    </tr>
+                {% endfor %}
+                <tr></tr>
+                </tbody>
+            </table>
+        </div>
+
+        {% if not is_read_only %}
+            {% include "common/add_btn.html" %}
+        {% endif %}
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1" class="mr-2 px-4 py-2 bg-blue-500 text-white rounded-lg">&laquo; В начало</a>
+                    <a href="?page={{ page_obj.previous_page_number }}"
+                       class="mr-2 px-4 py-2 bg-blue-500 text-white rounded-lg">Предыдущая</a>
+                {% endif %}
+
+                <span class="current">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}"
+                       class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg">Следующая</a>
+                    <a class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                       href="?page={{ page_obj.paginator.num_pages }}">В конец &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+{% endblock %}

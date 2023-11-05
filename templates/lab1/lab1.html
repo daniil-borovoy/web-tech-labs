@@ -1,0 +1,16 @@
+{% extends "common/base.html" %}
+
+{% block content %}
+    <div class="container mx-auto bg-white rounded-lg shadow-md p-8 w-80">
+        <h1 class="text-xl font-bold mb-2"># Лабораторная №1</h1>
+        <h2 class="text-md mb-8">Выберите форму</h2>
+
+        <div class="mb-4">
+            <a href="product-form/"
+               class="bg-blue-500 text-white p-2 rounded text-center block hover:bg-blue-700 mb-2">Форма товара</a>
+            <a href="supplier-form/"
+               class="bg-blue-500 text-white p-2 rounded text-center block hover:bg-blue-700">Форма
+                поставщика</a>
+        </div>
+    </div>
+{% endblock %}

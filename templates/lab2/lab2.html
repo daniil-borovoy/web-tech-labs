@@ -1,0 +1,29 @@
+{% extends "common/base.html" %}
+
+{% block content %}
+    <div class="container mx-auto bg-white rounded-lg shadow-md p-8 w-1/2">
+        <h1 class="text-xl font-bold mb-10"># Лабораторная №2</h1>
+
+        <div class="links__container">
+
+            <h2>Таблицы</h2>
+            <ul class="mb-10">
+                {% for table in tables %}
+                    <li>
+                        - <a style="color: #333333;" href="{{ table.link }}">{{ table.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <h2>Запросы</h2>
+            <ul>
+                {% for query in queries %}
+                    <li>
+                        - <a style="color: #333333;" href="{{ query.link }}">{{ query.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+

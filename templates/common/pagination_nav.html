@@ -1,0 +1,26 @@
+<div class="flex justify-end w-full mt-4">
+    <button onclick="goToPreviousPage()" class="mr-2 px-4 py-2 bg-blue-500 text-white rounded">Предыдущая
+    </button>
+    <button onclick="goToNextPage()" class="px-4 py-2 bg-blue-500 text-white rounded">Следуюшая</button>
+</div>
+
+<script>
+    const goToNextPage = () => {
+        const params = new URLSearchParams(window.location.search);
+        const page = parseInt(params.get('page'), 10);
+        const newPage = page + 1;
+        if (newPage) {
+            window.location.href = `?page=${newPage}`;
+        }
+    }
+
+    const goToPreviousPage = () => {
+        const params = a
+        URLSearchParams(window.location.search);
+        const page = parseInt(params.get('page'), 10);
+        const newPage = page - 1;
+        if (newPage) {
+            window.location.href = `?page=${newPage}`;
+        }
+    };
+</script>

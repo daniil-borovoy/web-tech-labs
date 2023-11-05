@@ -37,3 +37,10 @@ table_name_to_form_map = {
     Supply.__name__: SupplyForm,
     Product.__name__: ProductForm,
 }
+
+table_model_name_to_form_map = {
+    Supplier._meta.model_name: SupplierForm,
+    Sale._meta.model_name: SaleForm,
+    Supply._meta.model_name: SupplyForm,
+    Product._meta.model_name: ProductForm,
+}

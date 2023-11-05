@@ -1,8 +1,6 @@
 from django.contrib import admin
+
 from labs.models import Product, Sale, Supply, Supplier, Log
-
-
-# Register your models here.
 
 
 @admin.register(Product)

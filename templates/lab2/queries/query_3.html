@@ -1,0 +1,18 @@
+{% extends "common/base.html" %}
+
+
+{% load tags %}
+
+{% block content %}
+    <div class="container">
+        <form style="padding-top: 30px" method="GET" action="" class="form-container">
+            Year:
+            <input type="number" min="1900" max="2099" step="1" value="{{ initial_year }}" name="year"/>
+            Month:
+            <input type="number" min="1" max="12" step="1" value="{{ initial_month }}" name="month"/>
+            <button type="submit">Применить</button>
+        </form>
+        {% include "common/go_back_btn.html" %}
+        <h1>{{ title }}: {{ value }}</h1>
+    </div>
+{% endblock %}

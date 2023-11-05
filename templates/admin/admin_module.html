@@ -9,14 +9,14 @@
                 <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {% for table in tables_list %}
                         <li class="mt-2">
-                            <a href="/admin-module/{{ table }}"
+                            <a href="/"
                                class="bg-blue-100 text-blue-600 px-4 py-2 rounded hover:bg-blue-200 inline-block">{{ table }}</a>
                         </li>
                     {% endfor %}
                 </ul>
             </div>
         {% else %}
-            <p class="text-red-500 mt-4">Вы не авторизованы. Пожалуйста, войдите в систему, чтобы получить доступ.</p>
+            <p class="text-red-500 mt-4">You are not authenticated. Please log in to access the tables.</p>
         {% endif %}
     </div>
 {% endblock %}

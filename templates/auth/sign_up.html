@@ -1,16 +1,21 @@
 {% extends "auth/auth_base.html" %}
 
 {% block content %}
-    <div class="bg-white rounded-lg shadow-md p-8 w-80">
-        <h1 class="text-2xl font-semibold mb-6 text-center">Authentication | Sign Up</h1>
-        <form method="post">{% csrf_token %}
-            {{ form }}
-            <button type="submit" class="w-full bg-blue-500 text-white font-semibold rounded-md py-2">Sign Up</button>
-        </form>
+    <div class="container mx-auto  w-80">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-2xl font-semibold mb-6 text-center">Регистрация</h1>
+            <form method="post">{% csrf_token %}
+                {{ form }}
+                <button type="submit" class="w-full bg-blue-500 text-white font-semibold rounded-md py-2">
+                    Зарегестрироваться
+                </button>
+            </form>
 
-        <hr class="my-6 border-t">
+            <hr class="my-6 border-t">
 
-        <p class="text-gray-600 text-center">Already have an account? <a href="/sign-in" class="text-blue-500">Sign
-            In</a></p>
+            <p class="text-gray-600 text-center">Уже есть аккаунт? <a href="/auth/sign-in"
+                                                                      class="text-blue-500">Войти</a>
+            </p>
+        </div>
     </div>
 {% endblock %}

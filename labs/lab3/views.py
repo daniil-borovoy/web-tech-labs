@@ -11,27 +11,20 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
 from labs.forms import table_name_to_form_map
-from labs.models import Supplier, Sale, Supply, Product
-
-table_name_to_table_map = {
-    Supplier.__name__: Supplier,
-    Sale.__name__: Sale,
-    Supply.__name__: Supply,
-    Product.__name__: Product,
-}
+from labs.utils.tables import table_name_to_table_map
 
 
 @login_required
 def table_page(request, table_name):
     table: models.Model = table_name_to_table_map.get(table_name)
     if table is None:
-        return render(request, "model_data.html", {"home_link": "/labs/3/"})
+        return render(request, "common/model_data.html", {"home_link": "/labs/3/"})
 
     entries = table.objects.filter(deleted=False)
     fields = [f for f in table._meta.fields if f.name != "id" and f.name != "deleted"]
     return render(
         request,
-        "model_data.html",
+        "common/model_data.html",
         {
             "model_name": table_name,
             "fields": fields,
