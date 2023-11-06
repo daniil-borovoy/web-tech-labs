@@ -6,11 +6,10 @@
 
 {% block content %}
     <div class="container mx-auto bg-white rounded-lg shadow-md p-8">
-        {% include "common/go_back_btn.html" %}
 
-        <form method="GET" action="" class="form-container border border-gray-300 p-4 rounded-lg">
-            {% csrf_token %}
-            {% if not hide_filter %}
+        {% if not hide_filter %}
+            <form method="GET" action="" class="form-container border border-gray-300 p-4 rounded-lg mb-10">
+                {% csrf_token %}
                 {% if not hide_filter_value %}
                     <div class="py-4">
                         <label for="filter_field" class="font-semibold">Filter by Field:</label>
@@ -22,27 +21,30 @@
                     </div>
                 {% endif %}
                 <div class="py-4">
-                    <label for="filter_value" class="font-semibold">Filter Value:</label>
+                    <label for="filter_value" class="font-semibold mb-2">Значение фильтра:</label>
                     {% if input_type == 'date' %}
                         <input type="date" name="filter_value" id="filter_field" value="{{ input_value }}"
-                               class="w-full border p-2">
+                               class="w-full border p-2 rounded-lg">
                     {% else %}
                         <input type="text" name="filter_value" id="filter_value" value="{{ input_value }}"
-                               class="w-full border p-2">
+                               class="w-full border p-2 rounded-lg">
                     {% endif %}
                 </div>
                 <div>
-                    <button type="submit" class="bg-blue-500 text-white font-semibold rounded-md py-2">Apply Filter
+                    <button type="submit" class="bg-blue-500 text-white font-semibold rounded-md p-2">Применить фильтр
                     </button>
                 </div>
-            {% endif %}
-        </form>
+            </form>
+        {% endif %}
 
         {% block title %}
-            <h1 class="text-2xl font-semibold mt-12">{{ model_name }} Table</h1>
+            <div class="flex flex-row content-center nowrap">
+                {% include "common/go_back_btn.html" %}
+                <h1 class="text-2xl font-semibold ml-5">Таблица "{{ model_name }}"</h1>
+            </div>
         {% endblock %}
 
-        <div class="table-container border border-gray-300 rounded-lg mt-4">
+        <div class="table-container border border-gray-300 rounded-lg mt-4 mb-4">
             <table class="table-fixed w-full">
                 <thead>
                 <tr>
@@ -55,7 +57,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for item in data %}
+                {% for item in page_obj %}
                     <tr>
                         {% for field_name in fields %}
                             <td class="px-4 py-2">{{ item|get_attribute:field_name.name }}</td>
@@ -82,7 +84,9 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="{{ fields|length }}" class="no-data p-4">No {{ model_name|lower }} availale.</td>
+                        <td colspan="{{ fields|length }}" class="no-data p-4">В таблице {{ model_name|lower }} ничего не
+                            найдено.
+                        </td>
                     </tr>
                 {% endfor %}
                 <tr></tr>
@@ -94,25 +98,8 @@
             {% include "common/add_btn.html" %}
         {% endif %}
 
-        <div class="pagination">
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page=1" class="mr-2 px-4 py-2 bg-blue-500 text-white rounded-lg">&laquo; В начало</a>
-                    <a href="?page={{ page_obj.previous_page_number }}"
-                       class="mr-2 px-4 py-2 bg-blue-500 text-white rounded-lg">Предыдущая</a>
-                {% endif %}
-
-                <span class="current">
-                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
-                </span>
-
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}"
-                       class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg">Следующая</a>
-                    <a class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
-                       href="?page={{ page_obj.paginator.num_pages }}">В конец &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
+        {% if not hide_pagination %}
+            {% include "common/pagination_nav.html" %}
+        {% endif %}
     </div>
 {% endblock %}

@@ -4,12 +4,22 @@
 
 {% block document_title %}{{ model_name }}{% endblock %}
 
+{% block head_content %}
+    <style>
+        td {
+            overflow-wrap: anywhere;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
     <div class="container mx-auto bg-white rounded-lg shadow-md p-8">
-        {% include "common/go_back_btn.html" %}
 
         {% block title %}
-            <h1 class="text-2xl font-semibold mt-6">{{ model_name }} Table</h1>
+            <div class="flex flex-row content-center nowrap">
+                {% include "common/go_back_btn.html" %}
+                <h1 class="text-2xl font-semibold ml-5">Таблица "{{ model_name }}"</h1>
+            </div>
         {% endblock %}
 
         <div class="table-container border border-gray-300 rounded-lg mt-4">
@@ -68,25 +78,6 @@
             </div>
         {% endif %}
 
-        <div class="pagination">
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page=1" class="mr-2 px-4 py-2 bg-blue-500 text-white rounded-lg">&laquo; В начало</a>
-                    <a href="?page={{ page_obj.previous_page_number }}"
-                       class="mr-2 px-4 py-2 bg-blue-500 text-white rounded-lg">Предыдущая</a>
-                {% endif %}
-
-                <span class="current">
-                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
-                </span>
-
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}"
-                       class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg">Следующая</a>
-                    <a class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
-                       href="?page={{ page_obj.paginator.num_pages }}">В конец &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
+        {% include "common/pagination_nav.html" %}
     </div>
 {% endblock %}

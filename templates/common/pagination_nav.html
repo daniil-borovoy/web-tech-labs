@@ -1,26 +1,20 @@
-<div class="flex justify-end w-full mt-4">
-    <button onclick="goToPreviousPage()" class="mr-2 px-4 py-2 bg-blue-500 text-white rounded">Предыдущая
-    </button>
-    <button onclick="goToNextPage()" class="px-4 py-2 bg-blue-500 text-white rounded">Следуюшая</button>
+<div class="pagination">
+    <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1" class="mr-2 px-4 py-2 bg-blue-500 text-white rounded-lg">&laquo; В начало</a>
+                    <a href="?page={{ page_obj.previous_page_number }}"
+                       class="mr-2 px-4 py-2 bg-blue-500 text-white rounded-lg">Предыдущая</a>
+                {% endif %}
+
+        <span class="current">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}"
+               class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg">Следующая</a>
+            <a class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+               href="?page={{ page_obj.paginator.num_pages }}">В конец &raquo;</a>
+        {% endif %}
+    </span>
 </div>
-
-<script>
-    const goToNextPage = () => {
-        const params = new URLSearchParams(window.location.search);
-        const page = parseInt(params.get('page'), 10);
-        const newPage = page + 1;
-        if (newPage) {
-            window.location.href = `?page=${newPage}`;
-        }
-    }
-
-    const goToPreviousPage = () => {
-        const params = a
-        URLSearchParams(window.location.search);
-        const page = parseInt(params.get('page'), 10);
-        const newPage = page - 1;
-        if (newPage) {
-            window.location.href = `?page=${newPage}`;
-        }
-    };
-</script>

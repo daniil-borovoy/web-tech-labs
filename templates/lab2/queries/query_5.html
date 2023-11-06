@@ -3,9 +3,10 @@
 {% load tags %}
 
 {% block content %}
-    <div class="container">
+    <div class="container mx-auto bg-white rounded-lg shadow-md p-8">
         {% include "common/go_back_btn.html" %}
-        <form method="GET" action="" class="form-container">
+
+        <form method="GET" action="" class="form-container mt-10 mb-5">
             <label for="filter_field">Поставщик:</label>
             <select name="filter_field" id="filter_field">
                 {% for field_name in suppliers %}
@@ -37,7 +38,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="{{ fields|length }}" class="no-data">No {{ model_name|lower }} available.</td>
+                        <td colspan="{{ fields|length }}" class="no-data">Пусто.</td>
                     </tr>
                 {% endfor %}
                 </tbody>

@@ -1,43 +1,51 @@
-from typing import Optional
-
 from django.contrib.auth.decorators import login_required
-from django.db import models
+from django.db.models import Model
 from django.http import (
     HttpResponseRedirect,
     HttpResponseBadRequest,
     HttpResponseNotFound,
 )
 from django.shortcuts import render, get_object_or_404
+from django.template.defaultfilters import lower
 from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView
 
 from labs.forms import table_name_to_form_map
+from labs.utils.model_mapping import create_model_mapping
 from labs.utils.tables import table_name_to_table_map
 
 
-@login_required
-def table_page(request, table_name):
-    table: models.Model = table_name_to_table_map.get(table_name)
-    if table is None:
-        return render(request, "common/model_data.html", {"home_link": "/labs/3/"})
+@method_decorator(login_required, name="dispatch")
+class Lab3TableView(ListView):
+    template_name = "lab4/model_table.html"
+    model_mapping = create_model_mapping()
+    paginate_by = 10
 
-    entries = table.objects.filter(deleted=False)
-    fields = [f for f in table._meta.fields if f.name != "id" and f.name != "deleted"]
-    return render(
-        request,
-        "common/model_data.html",
-        {
-            "model_name": table_name,
-            "fields": fields,
-            "data": entries,
+    def get(self, request, *args, **kwargs):
+        table_name = lower(kwargs.get("table_name"))
+        self.model: Model = self.model_mapping.get(table_name)
+        return super().get(self, request, *args, **kwargs)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        fields = [
+            field
+            for field in self.model._meta.fields
+            if field.name != "id" and field.name != "deleted"
+        ]
+        context = {
+            "model_name": self.model._meta.model_name,
             "hide_filter": True,
+            "fields": fields,
             "home_link": "/labs/3/",
-        },
-    )
+        }
+        kwargs.update(context)
+        return super().get_context_data(object_list=None, **kwargs)
 
 
 # TODO: refactor
 @login_required
-def entity_page(request, table_name, entity_id: Optional[int] = None):
+def entity_page(request, table_name, entity_id: int | None = None):
     form = table_name_to_form_map[table_name](request.POST)
 
     if not entity_id and request.method == "POST":

@@ -1,6 +1,7 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.db.models import Model
+from django.forms.utils import ErrorList
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import FormView, CreateView, TemplateView, ListView
@@ -12,7 +13,7 @@ from labs.utils.model_mapping import create_model_mapping, get_all_model_meta_na
 class SignUpView(CreateView):
     template_name = "auth/sign_up.html"
     form_class = SignUpForm
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("sign-in")
 
     def form_valid(self, form):
         user = form.save(commit=False)
@@ -34,7 +35,11 @@ class SignInView(FormView):
         user = authenticate(self.request, username=username, password=password)
         if user is not None:
             login(self.request, user)
-        return super().form_valid(form)
+            return super().form_valid(form)
+        else:
+            errors = form._errors.setdefault("username", ErrorList())
+            errors.append("User not found. Check correct username and pass")
+            return super().form_invalid(form)
 
 
 class AdminModuleView(TemplateView):
@@ -60,7 +65,9 @@ class AdminTableView(ListView):
         fields = [
             field
             for field in self.model._meta.fields
-            if field.name != "id" and field.name != "deleted"
+            if field.name != "id"
+            and field.name != "deleted"
+            and field.name != "password"
         ]
         context = {
             "model_name": self.model._meta.model_name,
@@ -70,36 +77,3 @@ class AdminTableView(ListView):
         }
         kwargs.update(context)
         return super().get_context_data(object_list=None, **kwargs)
-
-
-# def create_admin_entity_view(request, table_name, entity_id: int | None = None):
-#     form = table_model_name_to_form_map[table_name](request.POST)
-#
-#     if not entity_id and request.method == "POST":
-#         if form.is_valid():
-#             form.save()
-#
-#             return HttpResponseRedirect(reverse("table", args=[table_name]))
-#
-#         return render(request, "entities/entity_form.html", {"form": form})
-#
-#     elif not entity_id:
-#         form = table_model_name_to_form_map[table_name]
-#         return render(request, "entities/entity_form.html", {"form": form})
-#
-#     # Update entity
-#     try:
-#         entity = table_name_to_table_map[table_name].objects.get(pk=entity_id)
-#     except Exception:
-#         raise HttpResponseNotFound
-#
-#     if request.method == "POST":
-#         form = table_model_name_to_form_map[table_name](request.POST, instance=entity)
-#
-#         if form.is_valid():
-#             form.save()
-#             return HttpResponseRedirect(reverse("table", args=[table_name]))
-#     else:
-#         form = table_model_name_to_form_map[table_name](instance=entity)
-#
-#     return render(request, "entities/entity_form.html", {"form": form})

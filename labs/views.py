@@ -1,36 +1,14 @@
 from django.views.generic import TemplateView
 
-from labs.models import Product, Supplier, Sale, Supply
+from labs.lab2.menu import menu_tables, menu_queries
 
-tables = [
-    {"name": "Поставщики", "link": f"tables/{Supplier.__name__}"},
-    {"name": "Продажи", "link": f"tables/{Sale.__name__}"},
-    {"name": "Поставки", "link": f"tables/{Supply.__name__}"},
-    {"name": "Товары", "link": f"tables/{Product.__name__}"},
-]
 
-queries = [
-    {
-        "name": "Перечень поставщиков, расположенных по адресу в г. Москва",
-        "link": "queries/suppliers-in-city",
-    },
-    {
-        "name": "Cписок товаров, проданных за сегодняшний день",
-        "link": "queries/products-sold-today",
-    },
-    {
-        "name": "Выручка проданного товара за февраль текущего года",
-        "link": "queries/revenue-in-month",
-    },
-    {
-        "name": "Самый популярный товар (т.е. тот товар, который продавался чаще всего)",
-        "link": "queries/most-popular-product",
-    },
-    {
-        "name": "Вывести список товаров, поставляемый Mi SHOP, отсортированный от самого дорогого до самого дешевого",
-        "link": "queries/supplier-shop-products",
-    },
-]
+class HomeView(TemplateView):
+    template_name = "home.html"
+
+
+class InfoView(TemplateView):
+    template_name = "info.html"
 
 
 class Lab1View(TemplateView):
@@ -41,26 +19,20 @@ class Lab2View(TemplateView):
     template_name = "lab2/lab2.html"
 
     def get(self, request, *args, **kwargs):
-        return self.render_to_response(context={"tables": tables, "queries": queries})
+        return self.render_to_response(
+            context={"tables": menu_tables, "queries": menu_queries}
+        )
 
 
 class Lab3View(TemplateView):
     template_name = "lab3/lab3.html"
 
     def get(self, request, *args, **kwargs):
-        return self.render_to_response(context={"tables": tables})
+        return self.render_to_response(context={"tables": menu_tables})
 
 
 class LabNotFoundView(TemplateView):
     template_name = "common/lab_not_found.html"
-
-
-class HomeView(TemplateView):
-    template_name = "home.html"
-
-
-class InfoView(TemplateView):
-    template_name = "info.html"
 
 
 def get_lab_view_by_name(request, lab_name):

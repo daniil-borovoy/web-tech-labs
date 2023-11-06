@@ -4,15 +4,20 @@
 {% load tags %}
 
 {% block content %}
-    <div class="container">
-        <form style="padding-top: 30px" method="GET" action="" class="form-container">
-            Year:
-            <input type="number" min="1900" max="2099" step="1" value="{{ initial_year }}" name="year"/>
-            Month:
-            <input type="number" min="1" max="12" step="1" value="{{ initial_month }}" name="month"/>
-            <button type="submit">Применить</button>
-        </form>
+
+    <div class="container mx-auto bg-white rounded-lg shadow-md p-8 w-1/2">
+
         {% include "common/go_back_btn.html" %}
+        <form style="padding-top: 30px" method="GET" action="" class="form-container">
+            Год:
+            <input class="w-full border p-2 rounded-lg" type="number" min="1900" max="2099" step="1"
+                   value="{{ initial_year }}" name="year"/>
+            Месяц:
+            <input class="w-full border p-2 rounded-lg mb-5" type="number" min="1" max="12" step="1"
+                   value="{{ initial_month }}" name="month"/>
+            <button class="w-full bg-blue-500 text-white font-semibold rounded-md py-2 mb-5" type="submit">Применить
+            </button>
+        </form>
         <h1>{{ title }}: {{ value }}</h1>
     </div>
 {% endblock %}

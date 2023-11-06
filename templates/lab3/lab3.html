@@ -2,17 +2,17 @@
 
 {% block content %}
     <div class="container mx-auto bg-white rounded-lg shadow-md p-8 w-1/2">
-        <h1 class="text-xl font-bold mb-10"># Лабораторная №3</h1>
+        <h1 class="text-xl font-bold mb-5"># Лабораторная №3</h1>
 
         <div class="links__container">
-            <h2>Таблицы</h2>
-            <ul>
+            <h2 class="mb-5">Таблицы</h2>
+            <div class="flex flex-col mb-2">
                 {% for table in tables %}
-                    <li>
-                        - <a style="color: #333333;" href="{{ table.link }}">{{ table.name }}</a>
-                    </li>
+                    <a class="w-full bg-blue-500 text-white font-semibold rounded-md p-2 mb-5 hover:bg-blue-700"
+                       href="{{ table.link }}">{{ table.name }}
+                    </a>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     </div>
 {% endblock %}

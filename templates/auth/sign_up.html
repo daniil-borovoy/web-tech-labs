@@ -1,5 +1,19 @@
 {% extends "auth/auth_base.html" %}
 
+{% block head_content %}
+    <style>
+        .errorlist {
+            color: red;
+        }
+
+        .helptext {
+            width: 100%;
+            display: block;
+            color: grey;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
     <div class="container mx-auto  w-80">
         <div class="bg-white rounded-lg shadow-md p-8">
