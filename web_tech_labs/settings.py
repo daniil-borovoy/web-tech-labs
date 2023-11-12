@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-0m=u3=8#jb2jjt@=-c733!#%m!m2fnbvlzszf#vhgxv%!3+(b5"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["localhost"]
 
@@ -53,6 +53,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
 
 ROOT_URLCONF = "web_tech_labs.urls"
 
@@ -109,13 +110,18 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru"
 
 TIME_ZONE = "UTC"
-
+PHRASE_ENABLED = True
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
+
+SITE_ROOT = os.path.dirname(os.path.realpath(__name__))
+LOCALE_PATHS = (os.path.join(SITE_ROOT, "locale"),)
+
+# LOCALE_PATHS = (os.path.join(BASE_DIR, "locale/"),)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -132,5 +138,9 @@ STATICFILES_DIRS = ("static",)
 LOGIN_URL = "/auth/sign-in"
 
 LOGOUT_REDIRECT_URL = "/"
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, "labs", "../locale"),
+]
 
 # AUTHENTICATION_BACKENDS = ['labs.lab4.auth.EmailBackend']

@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator, MinLengthValidator
+from django.utils.translation import gettext as _
 
 from labs.lab4.input_widget import TextInputWidget
 
@@ -8,13 +10,14 @@ from labs.lab4.input_widget import TextInputWidget
 class SignInForm(forms.Form):
     username: str = forms.CharField(
         required=True,
-        widget=TextInputWidget(label="Username", input_type="text"),
+        label="Логин",
+        widget=TextInputWidget(input_type="text"),
         max_length=255,
     )
     password: str = forms.CharField(
         max_length=255,
+        label="Пароль",
         widget=TextInputWidget(
-            label="Password",
             input_type="text",
         ),
     )
@@ -22,8 +25,8 @@ class SignInForm(forms.Form):
 
 class SignUpForm(forms.ModelForm):
     repeat_password = forms.CharField(
+        label="Повтор пароля",
         widget=TextInputWidget(
-            label="Repeat Password",
             input_type="password",
         ),
         max_length=255,
@@ -36,32 +39,54 @@ class SignUpForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Specify the widget for selected fields
         self.fields["username"].widget = TextInputWidget(
-            label="Username",
             input_type="text",
         )
+        self.fields["username"].label = "Логин"
+        self.fields[
+            "username"
+        ].help_text = "150 символов или меньше. Только буквы, цифры и @/./+/-/_."
 
         self.fields["first_name"].widget = TextInputWidget(
-            label="First Name",
+            label="Имя",
             input_type="text",
+        )
+        self.fields["first_name"].label = "Имя"
+        self.fields["first_name"].required = True
+        self.fields["first_name"].validators.append(
+            MinLengthValidator(limit_value=5, message="Введите минимум 5 символов!")
         )
 
         self.fields["last_name"].widget = TextInputWidget(
-            label="Last Name",
+            label="Фамилия",
             input_type="text",
+        )
+        self.fields["last_name"].label = "Фамилия"
+        self.fields["last_name"].required = True
+        self.fields["last_name"].validators.append(
+            MinLengthValidator(limit_value=5, message="Введите минимум 5 символов!")
         )
 
         self.fields["email"].widget = TextInputWidget(
-            label="Email",
             input_type="email",
+        )
+        self.fields["email"].label = "Email"
+        self.fields["email"].validators[0] = EmailValidator(
+            message="Введите верный email!"
         )
 
         self.fields["password"].widget = TextInputWidget(
-            label="Password",
             input_type="password",
         )
         self.fields["password"].max_length = 255
+        self.fields["password"].label = "Пароль"
+        self.fields["password"].validators.append(
+            MinLengthValidator(limit_value=8, message="Введите минимум 8 символов!")
+        )
+        self.fields["password"].help_text = "Минимум 8 символов"
+
+        test = self.fields
+        print(test)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -70,7 +95,7 @@ class SignUpForm(forms.ModelForm):
 
         if password and repeat_password and password != repeat_password:
             raise ValidationError(
-                "Passwords do not match. Please enter the same password in both fields."
+                _("Passwords didn't happen. Please check if your input is correct!")
             )
 
     def save(self, commit=True):

@@ -20,17 +20,15 @@ class TextInputWidget(Widget):
         self.label_class = label_class
 
     def render(self, name, value, attrs=None, renderer=None):
-        # Define the attributes for the input element
         input_attrs = {
             "type": self.input_type,
-            "id": attrs.get("id", ""),
+            # "id": attrs.get("id", ""),
             "name": name,
             "class": self.input_class,
             "placeholder": self.placeholder,
             "value": value,
         }
 
-        # Combine the attributes and generate the HTML
         final_attrs = self.build_attrs(attrs, extra_attrs=input_attrs)
 
         input_html = f"<input{flatatt(final_attrs)}>"

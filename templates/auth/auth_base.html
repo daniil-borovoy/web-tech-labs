@@ -9,8 +9,8 @@
                 <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {% for table in tables_list %}
                         <li class="mt-2">
-                            <a href="/admin-module/{{ table }}"
-                               class="bg-blue-100 text-blue-600 px-4 py-2 rounded hover:bg-blue-200 inline-block">{{ table }}</a>
+                            <a href="/admin-module/{{ table.model_name }}?name={{ table.name }}"
+                               class="bg-blue-100 text-blue-600 px-4 py-2 rounded hover:bg-blue-200 inline-block">{{ table.name }}</a>
                         </li>
                     {% endfor %}
                 </ul>

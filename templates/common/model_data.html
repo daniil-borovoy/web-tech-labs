@@ -49,7 +49,7 @@
                 <thead>
                 <tr>
                     {% for field_name in fields %}
-                        <th class="px-4 py-2">{{ field_name.name }}</th>
+                        <th class="px-4 py-2">{{ field_name.verbose_name }}</th>
                     {% endfor %}
                     {% if not is_read_only %}
                         <th class="px-4 py-2 text-right mr-5" style="text-align: right !important;">Действия</th>

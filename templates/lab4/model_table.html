@@ -18,7 +18,7 @@
         {% block title %}
             <div class="flex flex-row content-center nowrap">
                 {% include "common/go_back_btn.html" %}
-                <h1 class="text-2xl font-semibold ml-5">Таблица "{{ model_name }}"</h1>
+                <h1 class="text-2xl font-semibold ml-5">Таблица "{{ i18n_name }}"</h1>
             </div>
         {% endblock %}
 
@@ -27,7 +27,7 @@
                 <thead>
                 <tr>
                     {% for field_name in fields %}
-                        <th class="px-4 py-2">{{ field_name.name }}</th>
+                        <th class="px-4 py-2">{{ field_name.verbose_name }}</th>
                     {% endfor %}
                     {% if not is_read_only %}
                         <th class="px-4 py-2 text-right mr-5" style="text-align: right !important;">Действия</th>
@@ -62,7 +62,9 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="{{ fields|length }}" class="no-data p-4">No {{ model_name|lower }} availale.</td>
+                        <td colspan="{{ fields|length }}" class="no-data p-4">В таблице {{ i18n_name|lower }} ничего
+                            нет.
+                        </td>
                     </tr>
                 {% endfor %}
                 <tr></tr>

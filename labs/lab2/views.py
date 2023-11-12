@@ -29,7 +29,7 @@ class Lab2TablePageView(ListView):
             if field.name != "id" and field.name != "deleted"
         ]
         context = {
-            "model_name": self.model._meta.model_name,
+            "model_name": self.model._meta.verbose_name,
             "hide_filter": True,
             "fields": fields,
             "home_link": "/labs/2/",
@@ -37,35 +37,6 @@ class Lab2TablePageView(ListView):
         }
         kwargs.update(context)
         return super().get_context_data(object_list=None, **kwargs)
-
-
-# @login_required
-# def table_page(request, table_name):
-#     table: models.Model = table_name_to_table_map.get(table_name)
-#     if table is None:
-#         return render(request, "common/model_data.html", {"is_read_only": True})
-#
-#     entries = table.objects.filter(deleted=False)
-#     limit = request.GET.get("limit")
-#     page_number = request.GET.get("page")
-#     page_limit = int(limit) if pagination_param_is_valid(limit) else DEFAULT_PAGE_LIMIT
-#
-#     paginator = Paginator(entries, page_limit)
-#     page_obj = paginator.get_page(page_number)
-#
-#     fields = [f for f in table._meta.fields if f.name != "id" and f.name != "deleted"]
-#
-#     return render(
-#         request,
-#         "common/model_data.html",
-#         {
-#             "model_name": table_name,
-#             "fields": fields,
-#             "data": page_obj,
-#             "hide_filter": True,
-#             "is_read_only": True,
-#         },
-#     )
 
 
 @login_required

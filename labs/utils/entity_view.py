@@ -93,21 +93,8 @@ class EditEntityView(UpdateView):
 
         if form.is_valid():
             form.save()
-            # TODO: подумать как сделать viewname изменяемым
             return HttpResponseRedirect(reverse("admin-table", args=[self.table_name]))
 
         return self.render_to_response(
             {"form": form, "home_link": f"/admin-module/{self.table_name}"}
         )
-
-
-# class DeleteEntityView(DeleteView):
-#     table_name = None
-#     pk = None
-#
-#     def __init__(self, model: Model, table_name: str, pk: int):
-#         self.model = model
-#         self.pk = pk
-#         # self.object = self.model.objects.filter(pk=entity_id)
-#         self.success_url = f"/admin-module/{table_name}/"
-#         super().__init__()

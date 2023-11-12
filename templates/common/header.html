@@ -1,15 +1,16 @@
+{% load i18n %}
 <header class="sticky top-0 flex flex-row justify-between px-10 bg-gray-700 py-2">
     <div></div>
     <nav>
         <ul class="flex space-x-4">
-            <li><a href="/" class="text-white">Home</a></li>
-            <li><a href="/labs/1" class="text-white">Lab 1</a></li>
-            <li><a href="/labs/2" class="text-white">Lab 2</a></li>
-            <li><a href="/labs/3" class="text-white">Lab 3</a></li>
-            <li><a href="/admin-module/" class="text-white">Lab 4</a></li>
-            <li><a href="/admin-module" class="text-white">Admin</a></li>
-            <li><a href="/auth/sign-in/" class="text-white">Auth</a></li>
-            <li><a href="/info" class="text-white">Info</a></li>
+            <li><a href="/" class="text-white">{% translate "Home" %}</a></li>
+            <li><a href="/labs/1" class="text-white">{% translate "Lab 1" %}</a></li>
+            <li><a href="/labs/2" class="text-white">{% translate "Lab 2" %}</a></li>
+            <li><a href="/labs/3" class="text-white">{% translate "Lab 3" %}</a></li>
+            <li><a href="/admin-module" class="text-white">{% translate "Lab 4" %}</a></li>
+            <li><a href="/admin-module" class="text-white">{% translate "Admin module" %}</a></li>
+            <li><a href="/auth/sign-in/" class="text-white">{% translate "Auth" %}</a></li>
+            <li><a href="/info" class="text-white">{% translate "Info" %}</a></li>
         </ul>
     </nav>
     {% if user.is_authenticated %}
