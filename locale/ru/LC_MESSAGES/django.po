@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-12 12:46+0000\n"
+"POT-Creation-Date: 2023-11-14 22:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,6 +116,14 @@ msgstr "Лог"
 msgid "Logs"
 msgstr "Логи"
 
+#: templates/403.html:7
+msgid "You have no access to this page"
+msgstr "У вас нет доступа к этой странице!"
+
+#: templates/403.html:8 templates/404.html:26
+msgid "Go home?"
+msgstr "Может домой?"
+
 #: templates/404.html:24
 msgid "Ooops."
 msgstr "Ууупс."
@@ -123,10 +131,6 @@ msgstr "Ууупс."
 #: templates/404.html:25
 msgid "Nothing found 🥲"
 msgstr "Ничего не найдено 🥲"
-
-#: templates/404.html:26
-msgid "Go home?"
-msgstr "Может домой?"
 
 #: templates/common/footer.html:3
 msgid "Daniil Borovoy"
@@ -163,6 +167,12 @@ msgstr "Авторизация"
 #: templates/common/header.html:13
 msgid "Info"
 msgstr "Информация"
+
+#: venv/lib/python3.12/site-packages/bootstrap4/components.py:17
+#: venv/lib/python3.12/site-packages/bootstrap4/templates/bootstrap4/form_errors.html:3
+#: venv/lib/python3.12/site-packages/bootstrap4/templates/bootstrap4/messages.html:4
+msgid "close"
+msgstr ""
 
 #: venv/lib/python3.12/site-packages/click/_termui_impl.py:518
 #, python-brace-format

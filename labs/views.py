@@ -10,6 +10,12 @@ class HomeView(TemplateView):
 class InfoView(TemplateView):
     template_name = "info.html"
 
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        perms = user.user_permissions.all()
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
 
 class Lab1View(TemplateView):
     template_name = "lab1/lab1.html"

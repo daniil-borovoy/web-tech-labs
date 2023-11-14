@@ -1,5 +1,6 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.db.models import Model
 from django.forms.utils import ErrorList
@@ -9,7 +10,8 @@ from django.views.generic import FormView, CreateView, TemplateView, ListView
 
 from labs.lab4.forms import SignUpForm, SignInForm
 from labs.models import Supplier, Product, Supply, Sale, Log
-from labs.utils.model_mapping import create_model_mapping, get_all_model_meta_names
+from labs.utils.decorators.in_admin_group import in_admin_group
+from labs.utils.model_mapping import create_model_mapping
 
 
 class SignUpView(CreateView):
@@ -24,8 +26,6 @@ class SignUpView(CreateView):
         user.save()
         login(self.request, user)
         return super().form_valid(form)
-
-    # def form_invalid(self, form):
 
 
 class SignInView(FormView):
@@ -48,13 +48,14 @@ class SignInView(FormView):
             return super().form_invalid(form)
 
 
-menu_tables = [
-    {"name": "Поставщики", "model_name": f"{Supplier._meta.model_name}"},
-    {"name": "Продажи", "model_name": f"{Sale._meta.model_name}"},
-    {"name": "Поставки", "model_name": f"{Supply._meta.model_name}"},
-    {"name": "Товары", "model_name": f"{Product._meta.model_name}"},
-    {"name": "Пользователи", "model_name": f"{User._meta.model_name}"},
-    {"name": "Логи", "model_name": f"{Log._meta.model_name}"},
+tables_to_show = [Supplier, User, Log, Sale, Supply, Product]
+
+menu_data = [
+    {
+        "name": model._meta.verbose_name_plural.capitalize(),
+        "model_name": model._meta.model_name,
+    }
+    for model in tables_to_show
 ]
 
 
@@ -62,12 +63,11 @@ class AdminModuleView(TemplateView):
     template_name = "auth/auth_base.html"
 
     def get(self, request, *args, **kwargs):
-        table_names = get_all_model_meta_names()
-        return self.render_to_response({"tables_list": menu_tables})
+        return self.render_to_response({"tables_list": menu_data})
 
 
 @method_decorator(login_required, name="dispatch")
-class AdminTableView(ListView):
+class AdminTableView(UserPassesTestMixin, ListView):
     template_name = "lab4/model_table.html"
     model_mapping = create_model_mapping()
     paginate_by = 10
@@ -94,3 +94,6 @@ class AdminTableView(ListView):
         }
         kwargs.update(context)
         return super().get_context_data(object_list=None, **kwargs)
+
+    def test_func(self):
+        return in_admin_group(user=self.request.user)

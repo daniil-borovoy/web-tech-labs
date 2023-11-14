@@ -18,7 +18,7 @@ class Lab2TablePageView(ListView):
     paginate_by = 10
 
     def get(self, request, *args, **kwargs):
-        table_name = lower(kwargs.get("table_name"))
+        table_name = lower(kwargs.get("slug"))
         self.model = self.model_mapping.get(table_name)
         return super().get(self, request, *args, **kwargs)
 

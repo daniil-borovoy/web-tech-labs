@@ -35,6 +35,7 @@ class Lab3TableView(ListView):
         ]
         context = {
             "model_name": self.model._meta.model_name,
+            "i18n_name": self.model._meta.verbose_name,
             "hide_filter": True,
             "fields": fields,
             "home_link": "/labs/3/",

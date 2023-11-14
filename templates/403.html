@@ -1,0 +1,10 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <div class="container mx-auto text-center">
+        <p class="text-5xl font-bold" style="padding-bottom: 30px !important;">403</p>
+        <h1 class="mb-10 text-xl font-bold">{% translate "You have no access to this page" %}</h1>
+        <a href="/" class="bg-blue-500 text-white font-semibold rounded-md p-2">{% translate "Go home?" %}</a>
+    </div>
+{% endblock %}

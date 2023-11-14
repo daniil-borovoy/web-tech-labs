@@ -1,10 +1,10 @@
 from labs.models import Supplier, Sale, Supply, Product
 
 menu_tables = [
-    {"name": "Поставщики", "link": f"tables/{Supplier.__name__}"},
-    {"name": "Продажи", "link": f"tables/{Sale.__name__}"},
-    {"name": "Поставки", "link": f"tables/{Supply.__name__}"},
-    {"name": "Товары", "link": f"tables/{Product.__name__}"},
+    {"name": "Поставщики", "link": f"tables/{Supplier._meta.model_name}"},
+    {"name": "Продажи", "link": f"tables/{Sale._meta.model_name}"},
+    {"name": "Поставки", "link": f"tables/{Supply._meta.model_name}"},
+    {"name": "Товары", "link": f"tables/{Product._meta.model_name}"},
 ]
 
 menu_queries = [
