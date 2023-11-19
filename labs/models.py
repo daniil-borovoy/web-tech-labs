@@ -4,7 +4,6 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import (
     Model,
     CharField,
-    BooleanField,
     FloatField,
     DateField,
     IntegerField,
@@ -22,7 +21,6 @@ class Supplier(Model):
     phone = CharField(max_length=255, verbose_name=_("Phone"))
     # TODO: db_column?
     who_to_contact = CharField(max_length=255, db_column="", verbose_name=_("Who to contact"))
-    deleted = BooleanField(default=False, verbose_name=_("Deleted"))
 
     class Meta:
         db_table = "suppliers"
@@ -38,7 +36,6 @@ class Product(Model):
     price = FloatField(verbose_name=_("Price"))
     receipt_date = DateField(default=datetime.date.today, verbose_name=_("Receipt date"))
     count = IntegerField(verbose_name=_("Count"))
-    deleted = BooleanField(default=False, verbose_name=_("Deleted"))
 
     class Meta:
         db_table = "products"
@@ -54,7 +51,6 @@ class Supply(Model):
     product = ForeignKey(Product, on_delete=CASCADE, db_column="product_id", verbose_name=_("Product"))
     count = IntegerField(default=0, verbose_name=_("Count"))
     created_at = DateTimeField(auto_created=True, editable=False, verbose_name=_("Created at"))
-    deleted = BooleanField(default=False, verbose_name=_("Deleted"))
 
     class Meta:
         db_table = "supplies"
@@ -70,7 +66,6 @@ class Sale(Model):
     date = DateField(verbose_name=_("Date"))
     count = IntegerField(verbose_name=_("Count"))
     retail_price = FloatField(verbose_name=_("Retail price"))
-    deleted = BooleanField(default=False, verbose_name=_("Deleted"))
 
     class Meta:
         db_table = "sales"
@@ -93,3 +88,7 @@ class Log(Model):
 
     def __str__(self):
         return f"{_("Log")} - {self.id}"
+
+
+class TestModel(Model):
+    name = CharField(max_length=255, verbose_name=_("Name"))

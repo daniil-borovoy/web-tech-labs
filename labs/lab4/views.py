@@ -1,6 +1,6 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Model
 from django.forms.utils import ErrorList
@@ -10,8 +10,8 @@ from django.views.generic import FormView, CreateView, TemplateView, ListView
 
 from labs.lab4.forms import SignUpForm, SignInForm
 from labs.models import Supplier, Product, Supply, Sale, Log
-from labs.utils.decorators.in_admin_group import in_admin_group
 from labs.utils.model_mapping import create_model_mapping
+from labs.utils.permissions import get_admin_module_permissions
 
 
 class SignUpView(CreateView):
@@ -37,6 +37,7 @@ class SignInView(FormView):
         username = form.cleaned_data["username"]
         password = form.cleaned_data["password"]
         user = authenticate(self.request, username=username, password=password)
+
         if user is not None:
             login(self.request, user)
             return super().form_valid(form)
@@ -59,15 +60,19 @@ menu_data = [
 ]
 
 
-class AdminModuleView(TemplateView):
+class AdminModuleView(PermissionRequiredMixin, TemplateView):
     template_name = "auth/auth_base.html"
+
+    permission_required = get_admin_module_permissions()
+
+    # = get_admin_module_permissions()
 
     def get(self, request, *args, **kwargs):
         return self.render_to_response({"tables_list": menu_data})
 
 
 @method_decorator(login_required, name="dispatch")
-class AdminTableView(UserPassesTestMixin, ListView):
+class AdminTableView(ListView):
     template_name = "lab4/model_table.html"
     model_mapping = create_model_mapping()
     paginate_by = 10
@@ -94,6 +99,3 @@ class AdminTableView(UserPassesTestMixin, ListView):
         }
         kwargs.update(context)
         return super().get_context_data(object_list=None, **kwargs)
-
-    def test_func(self):
-        return in_admin_group(user=self.request.user)

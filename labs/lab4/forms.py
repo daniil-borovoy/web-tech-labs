@@ -27,7 +27,7 @@ class SignUpForm(forms.ModelForm):
     repeat_password = forms.CharField(
         label="Повтор пароля",
         widget=TextInputWidget(
-            input_type="password",
+            input_type="text",
         ),
         max_length=255,
     )
@@ -76,7 +76,7 @@ class SignUpForm(forms.ModelForm):
         )
 
         self.fields["password"].widget = TextInputWidget(
-            input_type="password",
+            input_type="text",
         )
         self.fields["password"].max_length = 255
         self.fields["password"].label = "Пароль"
