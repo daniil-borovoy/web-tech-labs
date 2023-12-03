@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-14 22:27+0000\n"
+"POT-Creation-Date: 2023-11-25 07:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,95 +24,95 @@ msgstr ""
 msgid "Passwords didn't happen. Please check if your input is correct!"
 msgstr "Пароли не совпадают!. Пожалуйста, проверьте правильность ввода!"
 
-#: labs/models.py:20 labs/models.py:37
+#: labs/lab5/sale_statistics_view.py:31
+msgid "Sales statistics"
+msgstr "Статистика продаж"
+
+#: labs/models.py:19 labs/models.py:35 labs/models.py:94
 msgid "Name"
 msgstr "Имя"
 
-#: labs/models.py:21
+#: labs/models.py:20
 msgid "Address"
 msgstr "Адрес"
 
-#: labs/models.py:22
+#: labs/models.py:21
 msgid "Phone"
 msgstr "Телефон"
 
-#: labs/models.py:24
+#: labs/models.py:23
 msgid "Who to contact"
 msgstr "К кому обращаться"
 
-#: labs/models.py:25 labs/models.py:41 labs/models.py:57 labs/models.py:73
-msgid "Deleted"
-msgstr "Удалено"
-
-#: labs/models.py:29 labs/models.py:53
+#: labs/models.py:27 labs/models.py:50
 msgid "Supplier"
 msgstr "Поставщик"
 
-#: labs/models.py:30
+#: labs/models.py:28
 msgid "Suppliers"
 msgstr "Поставщики"
 
-#: labs/models.py:38
+#: labs/models.py:36
 msgid "Price"
 msgstr "Цена"
 
-#: labs/models.py:39
+#: labs/models.py:37
 msgid "Receipt date"
 msgstr "Дата поставки"
 
-#: labs/models.py:40 labs/models.py:55 labs/models.py:71
+#: labs/models.py:38 labs/models.py:52 labs/models.py:67
 msgid "Count"
 msgstr "Количество"
 
-#: labs/models.py:45 labs/models.py:54 labs/models.py:69
+#: labs/models.py:42 labs/models.py:51 labs/models.py:65
 msgid "Product"
 msgstr "Товар"
 
-#: labs/models.py:46
+#: labs/models.py:43
 msgid "Products"
 msgstr "Товары"
 
-#: labs/models.py:56 labs/models.py:86
+#: labs/models.py:53 labs/models.py:81
 msgid "Created at"
 msgstr "Создано в"
 
-#: labs/models.py:61
+#: labs/models.py:57
 msgid "Supply"
 msgstr "Поставка"
 
-#: labs/models.py:62
+#: labs/models.py:58
 msgid "Supplies"
 msgstr "Поставки"
 
-#: labs/models.py:70
+#: labs/models.py:66
 msgid "Date"
 msgstr "Дата"
 
-#: labs/models.py:72
+#: labs/models.py:68
 msgid "Retail price"
 msgstr "Розничная цена"
 
-#: labs/models.py:77
+#: labs/models.py:72
 msgid "Sale"
 msgstr "Продажа"
 
-#: labs/models.py:78
+#: labs/models.py:73
 msgid "Sales"
 msgstr "Продажи"
 
-#: labs/models.py:85
+#: labs/models.py:80
 msgid "Data"
 msgstr "Данные"
 
-#: labs/models.py:87
+#: labs/models.py:82
 msgid "Updated at"
 msgstr "Обновлено в"
 
-#: labs/models.py:91
+#: labs/models.py:86
 msgid "Log"
 msgstr "Лог"
 
-#: labs/models.py:92
+#: labs/models.py:87
 msgid "Logs"
 msgstr "Логи"
 
@@ -1660,3 +1660,6 @@ msgstr ""
 #: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:248
 msgid "Connect, get help, or contribute"
 msgstr ""
+
+#~ msgid "Deleted"
+#~ msgstr "Удалено"

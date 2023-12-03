@@ -1,11 +1,9 @@
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Model
 from django.forms.utils import ErrorList
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from django.views.generic import FormView, CreateView, TemplateView, ListView
 
 from labs.lab4.forms import SignUpForm, SignInForm
@@ -54,7 +52,7 @@ tables_to_show = [Supplier, User, Log, Sale, Supply, Product]
 menu_data = [
     {
         "name": model._meta.verbose_name_plural.capitalize(),
-        "model_name": model._meta.model_name,
+        "model_name": model._meta.model_name + "/1",
     }
     for model in tables_to_show
 ]
@@ -65,16 +63,14 @@ class AdminModuleView(PermissionRequiredMixin, TemplateView):
 
     permission_required = get_admin_module_permissions()
 
-    # = get_admin_module_permissions()
-
     def get(self, request, *args, **kwargs):
         return self.render_to_response({"tables_list": menu_data})
 
 
-@method_decorator(login_required, name="dispatch")
-class AdminTableView(ListView):
+class AdminTableView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = "lab4/model_table.html"
     model_mapping = create_model_mapping()
+    permission_required = get_admin_module_permissions()
     paginate_by = 10
 
     def get(self, request, *args, **kwargs):

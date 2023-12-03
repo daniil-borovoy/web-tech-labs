@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.template.defaultfilters import lower
 from django.urls import reverse
-from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 
 from labs.forms import table_name_to_form_map
@@ -11,8 +11,7 @@ from labs.utils.model_mapping import create_model_mapping
 from labs.utils.tables import table_name_to_table_map
 
 
-@method_decorator(login_required, name="dispatch")
-class Lab2TablePageView(ListView):
+class Lab2TablePageView(LoginRequiredMixin, ListView):
     template_name = "common/model_data.html"
     model_mapping = create_model_mapping()
     paginate_by = 10

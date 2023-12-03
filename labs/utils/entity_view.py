@@ -53,7 +53,7 @@ class AddEntityView(CreateView):
         super().__init__()
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        kwargs.update({"home_link": f"/admin-module/{self.model._meta.model_name}/"})
+        kwargs.update({"home_link": f"/admin-module/{self.model._meta.model_name}/1"})
         return super().get_context_data(object_list=None, **kwargs)
 
 
@@ -80,7 +80,7 @@ class EditEntityView(UpdateView):
         entity = self.model.objects.get(pk=self.entity_id)
         form = self.form_class(instance=entity)
         return self.render_to_response(
-            {"form": form, "home_link": f"/admin-module/{self.table_name}"}
+            {"form": form, "home_link": f"/admin-module/{self.table_name}/1"}
         )
 
     def post(self, request, *args, **kwargs):
@@ -96,5 +96,5 @@ class EditEntityView(UpdateView):
             return HttpResponseRedirect(reverse("admin-table", args=[self.table_name]))
 
         return self.render_to_response(
-            {"form": form, "home_link": f"/admin-module/{self.table_name}"}
+            {"form": form, "home_link": f"/admin-module/{self.table_name}/1"}
         )

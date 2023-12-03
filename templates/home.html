@@ -6,5 +6,9 @@
             <h1 class="text-4xl font-bold text-blue-500 text-center mb-4">Лабораторные работы</h1>
             <p class="text-lg text-gray-700 text-center">Выберите лабораторную работу из списка выше</p>
         </div>
+        <form method="post" action="{% url 'home' %}" class="max-w-lg mx-auto mt-4 p-4 bg-white shadow-md rounded">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </form>
     </div>
 {% endblock %}

@@ -1,17 +1,15 @@
 from datetime import date
 
 from dateutil import relativedelta
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, F, Count
 from django.utils.dateparse import parse_date
-from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
 from labs.models import Product, Sale, Supplier
 
 
-@method_decorator(login_required, name="dispatch")
-class SuppliersInCityQueryView(TemplateView):
+class SuppliersInCityQueryView(LoginRequiredMixin, TemplateView):
     template_name = "common/model_data.html"
 
     def get(self, request, *args, **kwargs):
@@ -37,8 +35,7 @@ class SuppliersInCityQueryView(TemplateView):
         )
 
 
-@method_decorator(login_required, name="dispatch")
-class ProductsSoldInDayQueryView(TemplateView):
+class ProductsSoldInDayQueryView(LoginRequiredMixin, TemplateView):
     template_name = "common/model_data.html"
 
     def get(self, request, *args, **kwargs):
@@ -73,8 +70,7 @@ class ProductsSoldInDayQueryView(TemplateView):
         )
 
 
-@method_decorator(login_required, name="dispatch")
-class RevenueInMonthQueryView(TemplateView):
+class RevenueInMonthQueryView(LoginRequiredMixin, TemplateView):
     template_name = "lab2/queries/query_3.html"
 
     def get(self, request, *args, **kwargs):
@@ -113,8 +109,7 @@ class RevenueInMonthQueryView(TemplateView):
         )
 
 
-@method_decorator(login_required, name="dispatch")
-class MostPopularProductQueryView(TemplateView):
+class MostPopularProductQueryView(LoginRequiredMixin, TemplateView):
     template_name = "lab2/queries/one_value_display.html"
 
     def get(self, request, *args, **kwargs):
@@ -133,8 +128,7 @@ class MostPopularProductQueryView(TemplateView):
         )
 
 
-@method_decorator(login_required, name="dispatch")
-class SupplierShopProductsQueryView(TemplateView):
+class SupplierShopProductsQueryView(LoginRequiredMixin, TemplateView):
     template_name = "lab2/queries/query_5.html"
 
     def get(self, request, *args, **kwargs):

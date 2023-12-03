@@ -22,7 +22,7 @@ auth_urls = [
 
 admin_module_urls = [
     path("", AdminModuleView.as_view()),
-    path("<str:table_name>/", AdminTableView.as_view(), name="admin-table"),
+    path("<str:table_name>/<int:page>", AdminTableView.as_view(), name="admin-table"),
     path("<str:table_name>/add", create_add_view, name="admin-add"),
     path(
         "<str:table_name>/<int:entity_id>/change/",

@@ -92,3 +92,4 @@ class Log(Model):
 
 class TestModel(Model):
     name = CharField(max_length=255, verbose_name=_("Name"))
+    # meta_description = CharField(max_length=255, verbose_name=_("Meta description"))

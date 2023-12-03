@@ -1,10 +1,17 @@
 from django.views.generic import TemplateView
 
 from labs.lab2.menu import menu_tables, menu_queries
+from labs.lab5.sale_statistics_view import SalesStatisticsForm
 
 
 class HomeView(TemplateView):
     template_name = "home.html"
+
+    def get(self, request, *args, **kwargs):
+        form = SalesStatisticsForm()
+        context = self.get_context_data(**kwargs)
+        context.update({"form": form})
+        return self.render_to_response(context)
 
 
 class InfoView(TemplateView):

@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db.models.signals import pre_save, pre_delete
 from django.dispatch import receiver
 from django.forms import model_to_dict
@@ -10,7 +9,7 @@ from labs.models import Supply, Log, Supplier, Product, Sale
 @receiver([pre_save, pre_delete], sender=Product)
 @receiver([pre_save, pre_delete], sender=Sale)
 @receiver([pre_save, pre_delete], sender=Supply)
-@receiver([pre_save, pre_delete], sender=User)
+# @receiver([pre_save, pre_delete], sender=User)
 def log(sender, instance, **kwargs):
     save_log(instance)
 
